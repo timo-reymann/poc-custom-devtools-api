@@ -21,7 +21,9 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js": ["content_script.js"]
+      "js": [
+        "content_script.js"
+      ]
     }
   ]
 }

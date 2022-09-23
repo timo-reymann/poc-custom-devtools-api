@@ -1,58 +1,73 @@
 const devtoolsHost = document.querySelector("#custom-devtools-host")
 
-const appendToHost = (...nodes) => {
+/**
+ * Append nodes bundled together in a row
+ * @param nodes {Node}
+ */
+const appendToDevToolsHost = (...nodes) => {
     const wrapper = document.createElement("div")
     wrapper.classList.add("devtools--row")
     nodes.forEach(node => wrapper.append(node))
     devtoolsHost.append(wrapper)
 }
 
+/**
+ * Register element with descriptor
+ * @param elementDescriptor {{type:string,label:string,id:string}}
+ */
 const registerElement = (elementDescriptor) => {
     switch (elementDescriptor.type) {
         case "button":
-            const button = document.createElement("button")
-            button.textContent = elementDescriptor.label
-            button.addEventListener("click", () => sendMessage(`event:${elementDescriptor.id}:action`))
-            appendToHost(button)
-            break;
+            const actionButton = document.createElement("button")
+            actionButton.textContent = elementDescriptor.label
+            actionButton.addEventListener("click", () => sendMessage(`event:${elementDescriptor.id}:action`))
+            appendToDevToolsHost(actionButton)
+            break
 
         case "input":
             // create input
-            const input = document.createElement("input")
-            input.placeholder = elementDescriptor.label
+            const inputField = document.createElement("input")
+            inputField.placeholder = elementDescriptor.label
 
             // create button to submit
-            const inputButton = document.createElement("button")
-            inputButton.innerText = "Submit"
-            inputButton.addEventListener("click", () => {
+            const submitButton = document.createElement("button")
+            submitButton.innerText = "Submit"
+            submitButton.addEventListener("click", () => {
                 sendMessage(`event:${elementDescriptor.id}:action`, {
-                    value: input.value || "bla"
+                    value: inputField.value || "bla"
                 })
+                inputField.value = ""
             })
-            appendToHost(input, inputButton)
-            break;
+            appendToDevToolsHost(inputField, submitButton)
+            break
 
         default:
             console.warn(`Unsupported element type ${elementDescriptor.type}`)
-            break;
+            break
     }
+}
+
+/**
+ * Reset UI state and treat as opened again
+ */
+const resetUI = () => {
+    sendOpen()
+    devtoolsHost.innerHTML = ""
 }
 
 const handleEvent = (e) => {
     switch (e.name) {
         case "registerElement":
             registerElement(e.data)
-            break;
+            break
 
         case "reloaded":
-            // handle reload by sending open event again + resetting UI
-            sendOpen()
-            devtoolsHost.innerHTML = ""
-            break;
+            resetUI()
+            break
 
         default:
             console.warn("Unknown event", e)
-            break;
+            break
     }
 }
 
