@@ -29,25 +29,25 @@ builtin dev tools.
 
 ### Application
 
-- contains small JavaScript API wrapper around window messaging
-- talks with content script via window messaging
+- Contains small JavaScript API wrapper around window messaging
+- Talks with content script via window messaging
 
 ### Extension
 
-- content script
-    - injected into application page setting up a connection between the page and the extension itself
-    - running in same context as application
-- background worker is required to make communication between content script and dev tools work
-    - takes care of routing messages to chrome runtime or window depending on direction
+- Content script
+    - Injected into application page setting up a connection between the page and the extension itself
+    - Running in same context as application
+- Background worker is required to make communication between content script and dev tools work
+    - Takes care of routing messages to chrome runtime or window depending on direction
 - Dev-Tools
-    - when opened send an event to content script telling they have been opened
-    - communicate only via events with the application (technical limitation)
-    - renders devtools based on elements getting registered by application
+    - When opened send an event to content script telling they have been opened
+    - Communicate only via events with the application (technical limitation)
+    - Renders devtools based on elements getting registered by application
 
 ## Current limitations
 
 - Only supports buttons and basic inputs for now
-- no complex structure for layout (yet)
+- No complex structure for layout (yet)
 
 ## What is missing for real world usage
 
