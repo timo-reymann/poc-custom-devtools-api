@@ -1,0 +1,28 @@
+@startuml
+'left to right direction
+skinparam monochrome true
+
+component Application {
+    [Dev-Tool registration]
+    [Dev-Tool registration]->[JavaScript API wrapper]
+
+    interface "Messaging-API" as messaging_api
+    [JavaScript API wrapper]
+    messaging_api<-->[JavaScript API wrapper]
+
+}
+
+component Browser {
+    component Extension {
+        [Content-Script]
+        [Background-Worker]
+        [Background-Worker]<-->[Content-Script]: chrome runtime connection
+
+        [Dev-Tools]
+        [Background-Worker]<-->[Dev-Tools]: chrome runtime connection
+    }
+}
+
+messaging_api<->[Content-Script]: window.postMessage
+
+@enduml

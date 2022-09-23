@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body, html {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: black;
+        }
+    </style>
+    <script src="devtools-api.js"></script>
+    <script>
+        registerCustomDevTools({
+            elementDescriptors: [
+                createButton(
+                    "Hi from your todays host: localhost",
+                    () => alert("So you dared to click me in the devtools?!")
+                ),
+                createButton(
+                    "Set random background",
+                    () => document.body.style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16)
+                ),
+                createInput(
+                    "Your name here",
+                    (e) => alert(`So you are ${e.value}?\nNoted.`)
+                )
+            ]
+        })
+    </script>
+</head>
+</html>

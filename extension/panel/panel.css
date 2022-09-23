@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: calc(100% - 10px);
+}
+
+body {
+    padding: 10px;
+    width: 90%;
+    margin: auto;
+}
+
+h1, h2 {
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+.theme-dark {
+    background: #202124;
+    color: white;
+    --color: white;
+}
+
+.devtool--host {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.devtools--row {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    column-gap: 10px;
+}
+
+.devtools--row input,
+.devtools--row button {
+    flex: 1;
+}
+
+button {
+    padding: 10px;
+    border: 1px solid white;
+    margin-right: 2px;
+    margin-left: 2px;
+    color: inherit;
+    background: none;
+}
+
+input {
+    background: none;
+    color: inherit;
+    border: none;
+    border-bottom: 1px solid white;
+    outline: none;
+}
