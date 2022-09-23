@@ -1,6 +1,10 @@
 Proof of Concept - Generic dev tools
 ===
 
+> :warning: DISCLAIMER: This is a very minimal proof of concept, with **no error handling or tests** at all.
+> 
+> It is a pure evaluation for now. Feel free to reuse this work for other projects.
+
 This repository contains a proof of concept for registering devtools directly from the running application in the
 browser.
 
@@ -54,3 +58,18 @@ builtin dev tools.
   - only include devtools in dev builds etc.
 - Creating extension for other browsers (moving out the reusable parts for other browsers)
 - Publishing npm package for API
+
+## Try out
+
+### Requirements
+- Chrome
+
+## Instructions
+- Set up extension folder as unbundled Chrome extension
+  - Got to _Extensions_
+  - Toggle developer mode
+  - Click _Load unpacked_
+  - Select `./extension`
+- Open `application/index.html` in your browser (preferably with local web server)
+- Open dev tools and go to tab _Custom Dev tools_
+- Now you can interact with the page using the few actions that got registered by the application
