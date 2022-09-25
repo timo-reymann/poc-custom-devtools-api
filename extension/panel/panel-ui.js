@@ -1,7 +1,5 @@
 const devtoolsHost = document.querySelector("#custom-devtools-host")
 
-let registeredElements = [];
-
 /**
  * Append nodes bundled together in a row
  * @param nodes {Node}
@@ -95,7 +93,6 @@ const registerElement = (elementDescriptor) => {
  * Reset UI state and treat as opened again
  */
 const resetState = () => {
-    registeredElements = []
     devtoolsHost.innerHTML = ""
 }
 
@@ -103,6 +100,10 @@ const handleEvent = (e) => {
     switch (e.name) {
         case "registerElement":
             registerElement(e.data)
+            break
+
+        case "devtools:agent:ready":
+            resetState()
             break
 
         case "reloaded":
