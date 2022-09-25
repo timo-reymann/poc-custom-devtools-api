@@ -11,38 +11,64 @@ const appendToDevToolsHost = (...nodes) => {
     devtoolsHost.append(wrapper)
 }
 
+const createButton = (elementDescriptor) => {
+    const actionButton = document.createElement("button")
+    actionButton.textContent = elementDescriptor.label
+    actionButton.addEventListener("click", () => sendMessage(`event:${elementDescriptor.id}:action`))
+    return actionButton;
+}
+
+const createInput = (elementDescriptor) => {
+    // create input
+    const inputField = document.createElement("input")
+    inputField.placeholder = elementDescriptor.label
+    inputField.type = elementDescriptor.inputType || "text"
+    inputField.addEventListener("keyup", e => {
+        if (e.key === "Enter") {
+            submitButton.click()
+        }
+    })
+
+    // create button to submit
+    const submitButton = document.createElement("button")
+    submitButton.innerText = "Submit"
+    submitButton.addEventListener("click", () => {
+        sendMessage(`event:${elementDescriptor.id}:action`, {
+            value: inputField.value || "bla"
+        })
+        inputField.value = ""
+    })
+
+    return [inputField, submitButton]
+}
+
+const createHeading = (elementDescriptor) => {
+    const heading = document.createElement("h1")
+    heading.innerText = elementDescriptor.label
+    heading.id = elementDescriptor.id
+    return heading;
+}
+
 /**
  * Register element with descriptor
- * @param elementDescriptor {{type:string,label:string,id:string}}
+ * @param elementDescriptor {{type:string,label:string,id:string,inputType:string?}}
  */
 const registerElement = (elementDescriptor) => {
     switch (elementDescriptor.type) {
         case "button":
-            const actionButton = document.createElement("button")
-            actionButton.textContent = elementDescriptor.label
-            actionButton.addEventListener("click", () => sendMessage(`event:${elementDescriptor.id}:action`))
-            appendToDevToolsHost(actionButton)
+            appendToDevToolsHost(createButton(elementDescriptor))
             break
 
         case "input":
-            // create input
-            const inputField = document.createElement("input")
-            inputField.placeholder = elementDescriptor.label
-
-            // create button to submit
-            const submitButton = document.createElement("button")
-            submitButton.innerText = "Submit"
-            submitButton.addEventListener("click", () => {
-                sendMessage(`event:${elementDescriptor.id}:action`, {
-                    value: inputField.value || "bla"
-                })
-                inputField.value = ""
-            })
-            appendToDevToolsHost(inputField, submitButton)
+            appendToDevToolsHost(...createInput(elementDescriptor))
             break
 
+        case "heading":
+            appendToDevToolsHost(createHeading(elementDescriptor))
+            break;
+
         default:
-            console.warn(`Unsupported element type ${elementDescriptor.type}`)
+            sendError(`Unsupported element type ${elementDescriptor.type}`)
             break
     }
 }
@@ -66,7 +92,7 @@ const handleEvent = (e) => {
             break
 
         default:
-            console.warn("Unknown event", e)
+            sendError(`Unsupported event name ${e.name}`)
             break
     }
 }

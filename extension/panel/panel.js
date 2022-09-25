@@ -1,4 +1,4 @@
-const browserAPI = browser || chrome
+const browserAPI = chrome || browser
 
 // Set theme to panel to style according to theme selected
 const theme = browserAPI.devtools.panels.themeName
@@ -8,25 +8,6 @@ document.body.classList.add(`theme-${theme}`)
 const backgroundPageConnection = browserAPI.runtime.connect({
     name: 'panel'
 })
-
-// init messaging connection
-backgroundPageConnection.postMessage({
-    name: 'init',
-    tabId: browserAPI.devtools.inspectedWindow.tabId
-})
-
-/**
- * Send open event for devtools in the currently inspected window
- */
-const sendOpen = () => {
-    backgroundPageConnection.postMessage({
-        name: 'devtools:open',
-        tabId: browserAPI.devtools.inspectedWindow.tabId
-    })
-}
-
-// signal for hosted page
-sendOpen()
 
 /**
  * Send message to agent
@@ -40,3 +21,20 @@ const sendMessage = (name, data) => {
         data
     })
 }
+
+// init messaging connection
+sendMessage("init")
+
+/**
+ * Send open event for devtools in the currently inspected window
+ */
+const sendOpen = () => {
+    sendMessage("devtools:open")
+}
+
+const sendError = (message) => {
+    sendMessage("devtools:error", message)
+}
+
+// signal for hosted page
+sendOpen()
