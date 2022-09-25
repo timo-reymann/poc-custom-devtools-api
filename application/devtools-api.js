@@ -69,13 +69,24 @@ const createHeading = (label) => {
  * @returns {{onAction, id: *, label, type: string}}
  */
 const createInput = (inputDescriptor) => {
-    const {label, onAction, type} = inputDescriptor;
+    const {label, onAction, type} = inputDescriptor
     return {
         id: uuidv4(),
         type: "input",
         inputType: type,
         label,
         onAction
+    }
+}
+
+const createDropdown = (inputDescriptor) => {
+    const {label, onAction, options} = inputDescriptor
+    return {
+        id: uuidv4(),
+        type: "dropdown",
+        label,
+        onAction,
+        options
     }
 }
 

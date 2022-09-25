@@ -25,6 +25,14 @@
                     "Log it baby one more time",
                     () => console.log("Oh yeah, thats it!")
                 ),
+                createDropdown({
+                    label: "Select something",
+                    options: [
+                        "A",
+                        "B"
+                    ],
+                    onAction: (e) => console.log("Selection changed", e.value)
+                }),
                 createHeading("Manipulate page"),
                 createButton(
                     "Set random background",

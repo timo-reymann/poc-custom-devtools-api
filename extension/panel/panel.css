@@ -48,7 +48,8 @@ p {
 }
 
 .devtools--row input,
-.devtools--row button {
+.devtools--row button,
+.devtools--row select {
     flex: 1;
 }
 
@@ -93,12 +94,26 @@ input {
     padding-right: 8px;
 }
 
-.theme-dark input {
+.theme-dark input,
+.theme-dark select {
     border: 1px solid #ced4da;
     color: #fff;
 }
 
-.theme-light input {
+.theme-light input,
+.theme-light select {
     border: 1px solid #000;
     color: #000;
+}
+
+select {
+    height: 39px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: .25rem;
 }
