@@ -1,7 +1,7 @@
 /**
  * Send event to dev tools
  * @param name {string} Name of the event
- * @param data {Object|null} Payload of the event, can be omitted
+ * @param data {Object|undefined} Payload of the event, can be omitted
  */
 const sendEvent = (name, data) => {
     window.postMessage({
@@ -120,6 +120,7 @@ const registerCustomDevTools = (devTools) => {
         const event = e.data
         switch (event.name) {
             case "devtools:open":
+                sendEvent("devtools:agent:ready")
                 if (elementDescriptors) {
                     elementDescriptors.forEach(descriptor => registerElement(descriptor))
                 }
