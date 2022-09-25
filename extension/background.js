@@ -1,9 +1,10 @@
+const browserAPI = chrome || browser
 let connections = {}
 
 /*
  * agent api -> content script -> background script -> dev tools
  */
-chrome.runtime.onMessage.addListener(function(request, sender) {
+browserAPI.runtime.onMessage.addListener(function(request, sender) {
     if (sender.tab) {
         const tabId = sender.tab.id
         if (tabId in connections) {
@@ -21,7 +22,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
 /*
  * agent api <- content script <- background script <- dev tools
  */
-chrome.runtime.onConnect.addListener(function(port) {
+browserAPI.runtime.onConnect.addListener(function(port) {
 
     // Listen to messages sent from the DevTools page
     port.onMessage.addListener(function(request) {
@@ -50,7 +51,7 @@ chrome.runtime.onConnect.addListener(function(port) {
 /*
     Propagate reloads to be able to simulate a open to page making sure the event is always fired
  */
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+browserAPI.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
     if (tabId in connections && changeInfo.status === 'complete') {
         connections[tabId].postMessage({
             name: 'reloaded'

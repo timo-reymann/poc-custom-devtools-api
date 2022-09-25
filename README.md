@@ -56,7 +56,6 @@ builtin dev tools.
 - Support more complex layouts and more UI elements
 - Provide instructions on how to use in applications
   - only include devtools in dev builds etc.
-- Creating extension for other browsers (moving out the reusable parts for other browsers)
 - Publishing npm package for API
 
 ## Try out
@@ -65,11 +64,13 @@ builtin dev tools.
 - Chrome
 
 ## Instructions
-- Set up extension folder as unbundled Chrome extension
-  - Got to _Extensions_
-  - Toggle developer mode
-  - Click _Load unpacked_
-  - Select `./extension`
+- Link or copy manifest-{firefox|chrome}.json to manifest.json for the browser you want to use
+- Chrom(ium) - including Chrome, new Edge, Opera etc.
+  - Set up extension folder as unbundled Chrome extension
+    - Got to _Extensions_
+    - Toggle developer mode
+    - Click _Load unpacked_
+    - Select `./extension`
 - Open `application/index.html` in your browser (preferably with local web server)
 - Open dev tools and go to tab _Custom Dev tools_
 - Now you can interact with the page using the few actions that got registered by the application

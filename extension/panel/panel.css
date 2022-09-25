@@ -13,12 +13,6 @@ body {
     margin: auto;
 }
 
-h1,
-h2 {
-    margin-bottom: 10px;
-    margin-top: 15px;
-}
-
 p {
     margin-bottom: 10px;
 }
@@ -36,8 +30,8 @@ p {
 }
 
 .devtools--row {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     width: 100%;
     flex-grow: 1;
     display: flex;
@@ -50,12 +44,21 @@ p {
 }
 
 button {
-    padding: 10px;
-    border: 1px solid white;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: none;
+    border-radius: 2px;
     margin-right: 2px;
     margin-left: 2px;
-    color: inherit;
-    background: none;
+    background: #e9e9ea;
+    color: #0c0c0d;
+    height: 32px;
+    transition: all .2s;
+}
+
+button:hover {
+    background: #ffff;
+    cursor: pointer;
 }
 
 input {
