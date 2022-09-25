@@ -1,4 +1,4 @@
-const browserAPI = browser || chrome
+const browserAPI = chrome || browser
 
 browserAPI.devtools.panels.create("Custom Dev-Tools",
     "panel/settings-gears.png",

@@ -1,4 +1,5 @@
-const browserAPI = browser || chrome
+const browserAPI = chrome || browser
+
 /*
  * agent ->content script -> background script -> dev tools
  */
