@@ -40,7 +40,7 @@ browserAPI.runtime.onConnect.addListener(function(port) {
         }
 
         // Otherwise, broadcast to agent
-        chrome.tabs.sendMessage(request.tabId, {
+        browserAPI.tabs.sendMessage(request.tabId, {
             name: request.name,
             data: request.data
         })

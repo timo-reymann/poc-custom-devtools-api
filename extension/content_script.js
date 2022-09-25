@@ -21,11 +21,10 @@ window.addEventListener('message', function(event) {
     browserAPI.runtime.sendMessage(message)
 })
 
-
 /*
  * agent <- content script <- background script <- dev tools
  */
-chrome.runtime.onMessage.addListener(function(request) {
+browserAPI.runtime.onMessage.addListener(function(request) {
     console.debug("[Custom DevTools] Got message from dev tools", request)
     request.source = 'custom-devtools-devtools'
     window.postMessage(request, '*')
