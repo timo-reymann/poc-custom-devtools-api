@@ -128,7 +128,7 @@ const registerCustomDevTools = (devTools) => {
 
             case "devtools:error":
                 console.error("Got error from custom devtools", event)
-                break;
+                break
 
             default:
                 const listener = findListener(event)
