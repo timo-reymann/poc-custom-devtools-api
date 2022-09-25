@@ -71,6 +71,12 @@ builtin dev tools.
     - Toggle developer mode
     - Click _Load unpacked_
     - Select `./extension`
+- Firefox
+  - Setup extension folder as unbundled extension
+    - Go to _Settings_
+    - Choose the tab _Extensions_
+    - Click on the gear icon > _Debug addons_
+    - Click _Load temporary Add-on_ and select the `manifest.json`
 - Open `application/index.html` in your browser (preferably with local web server)
 - Open dev tools and go to tab _Custom Dev tools_
 - Now you can interact with the page using the few actions that got registered by the application
