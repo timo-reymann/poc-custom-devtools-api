@@ -9,8 +9,12 @@ html, body {
 
 body {
     padding: 10px;
-    width: 90%;
-    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+h1 {
+    font-size: 30px;
+    margin-top: 10px;
 }
 
 p {
@@ -26,16 +30,14 @@ p {
 .devtool--host {
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    gap: 10px;
 }
 
 .devtools--row {
-    padding-top: 4px;
-    padding-bottom: 4px;
     width: 100%;
     flex-grow: 1;
     display: flex;
-    column-gap: 10px;
+    gap: 10px;
 }
 
 .devtools--row input,
@@ -46,25 +48,46 @@ p {
 button {
     padding-left: 8px;
     padding-right: 8px;
+    border-radius: .25rem;
+    transition: all .1s;
+    line-height: 1.5;
+    height: 39px;
     border: none;
-    border-radius: 2px;
-    margin-right: 2px;
-    margin-left: 2px;
-    background: #e9e9ea;
-    color: #0c0c0d;
-    height: 32px;
-    transition: all .2s;
+}
+
+.theme-dark button {
+    background: #343a40;
+    color: #fff;
+    border-color: #343a40;
 }
 
 button:hover {
-    background: #ffff;
     cursor: pointer;
 }
 
+.theme-dark button:hover {
+    color: #fff;
+    background-color: #23272b;
+    border-color: #1d2124;
+}
+
 input {
-    background: none;
-    color: inherit;
     border: none;
-    border-bottom: 1px solid white;
+    background: none;
     outline: none;
+    border-radius: .25rem;
+    line-height: 1.5;
+    height: calc(39px - 2px);
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.theme-dark input {
+    border: 1px solid #ced4da;
+    color: #fff;
+}
+
+.theme-light input {
+    border: 1px solid #000;
+    color: #000;
 }

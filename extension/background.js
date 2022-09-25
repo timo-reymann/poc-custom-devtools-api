@@ -10,10 +10,10 @@ browserAPI.runtime.onMessage.addListener(function(request, sender) {
         if (tabId in connections) {
             connections[tabId].postMessage(request)
         } else {
-            console.debug("Tab not found in connection list.")
+            console.debug("[background-script] Tab not found in connection list.")
         }
     } else {
-        console.warn("sender.tab not defined.")
+        console.warn("[background-script] Failed to send message: sender.tab not defined.")
     }
     return true
 })
@@ -26,7 +26,7 @@ browserAPI.runtime.onConnect.addListener(function(port) {
 
     // Listen to messages sent from the DevTools page
     port.onMessage.addListener(function(request) {
-        console.debug('Forwarding message from dev tools to page', request)
+        console.debug('[background-script] Forwarding message from dev tools to page', request)
 
         // Register initial connection
         if (request.name === 'init') {

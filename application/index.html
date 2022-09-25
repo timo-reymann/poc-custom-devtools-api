@@ -16,18 +16,34 @@
     <script>
         registerCustomDevTools({
             elementDescriptors: [
+                createHeading("Commmunication"),
                 createButton(
                     "Hi from your todays host: localhost",
                     () => alert("So you dared to click me in the devtools?!")
                 ),
                 createButton(
+                    "Log it baby one more time",
+                    () => console.log("Oh yeah, thats it!")
+                ),
+                createHeading("Manipulate page"),
+                createButton(
                     "Set random background",
                     () => document.body.style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16)
                 ),
-                createInput(
-                    "Your name here",
-                    (e) => alert(`So you are ${e.value}?\nNoted.`)
-                )
+                createInput({
+                    label: "Your name here",
+                    type: "text",
+                    onAction: (e) => alert(`So you are ${e.value}?\nNoted.`)
+                }),
+                createInput({
+                    label: "Overwrite background color",
+                    type: "color",
+                    onAction: (e) => document.body.style.backgroundColor = e.value
+                }),
+                // try to crash -> should log error
+                {
+                    type: "test"
+                }
             ]
         })
     </script>

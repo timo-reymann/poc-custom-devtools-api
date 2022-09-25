@@ -51,15 +51,29 @@ const createButton = (label, onAction) => {
 }
 
 /**
+ * Create heading to separate entries
+ * @param label Text for the heading
+ * @returns {{id: *, label, type: string}}
+ */
+const createHeading = (label) => {
+    return {
+        id: uuidv4(),
+        type: "heading",
+        label
+    }
+}
+
+/**
  * Create input field with submit button
- * @param label {string} Label for input field
- * @param onAction {Function} What should happen when submit is clicked
+ * @param inputDescriptor {{label:string,onAction:Function,type:string?}} Label for input field
  * @returns {{onAction, id: *, label, type: string}}
  */
-const createInput = (label, onAction) => {
+const createInput = (inputDescriptor) => {
+    const {label, onAction, type} = inputDescriptor;
     return {
         id: uuidv4(),
         type: "input",
+        inputType: type,
         label,
         onAction
     }
@@ -99,6 +113,10 @@ const registerCustomDevTools = (devTools) => {
                     elementDescriptors.forEach(descriptor => registerElement(descriptor))
                 }
                 break
+
+            case "devtools:error":
+                console.error("Got error from custom devtools", event)
+                break;
 
             default:
                 const listener = findListener(event)

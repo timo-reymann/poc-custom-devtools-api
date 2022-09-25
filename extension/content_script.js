@@ -16,7 +16,7 @@ window.addEventListener('message', function(event) {
         return
     }
 
-    console.debug("Forwarding message from agent to dev tools",event.data)
+    console.debug("[Custom DevTools] Forwarding message from agent to dev tools",event.data)
     browserAPI.runtime.sendMessage(message)
 })
 
@@ -25,7 +25,7 @@ window.addEventListener('message', function(event) {
  * agent <- content script <- background script <- dev tools
  */
 chrome.runtime.onMessage.addListener(function(request) {
-    console.debug("Got message from dev tools", request)
+    console.debug("[Custom DevTools] Got message from dev tools", request)
     request.source = 'custom-devtools-devtools'
     window.postMessage(request, '*')
 })
