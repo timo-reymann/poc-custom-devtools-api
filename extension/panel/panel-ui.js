@@ -37,7 +37,7 @@ const createInput = (elementDescriptor) => {
     submitButton.innerText = "Submit"
     submitButton.addEventListener("click", () => {
         sendMessage(`event:${elementDescriptor.id}:action`, {
-            value: inputField.value || "bla"
+            value: inputField.value || ""
         })
         inputField.value = ""
     })
@@ -50,6 +50,17 @@ const createHeading = (elementDescriptor) => {
     heading.innerText = elementDescriptor.label
     heading.id = elementDescriptor.id
     return heading;
+}
+
+const createDropdown = (elementDescriptor) => {
+    const select = document.createElement("select")
+    const options = elementDescriptor.options.map(o => `<option value="${o}">${o}</option>`)
+    select.innerHTML = `<option selected disabled>${elementDescriptor.label}</option>`
+    select.innerHTML += options.join("\n")
+    select.addEventListener("change", e => sendMessage(`event:${elementDescriptor.id}:action`, {
+        value: select.value || ""
+    }))
+    return select
 }
 
 /**
@@ -66,9 +77,13 @@ const registerElement = (elementDescriptor) => {
             appendToDevToolsHost(...createInput(elementDescriptor))
             break
 
+        case "dropdown":
+            appendToDevToolsHost(createDropdown(elementDescriptor))
+            break
+
         case "heading":
             appendToDevToolsHost(createHeading(elementDescriptor))
-            break;
+            break
 
         default:
             sendError(`Unsupported element type ${elementDescriptor.type}`)
