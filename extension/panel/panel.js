@@ -28,13 +28,14 @@ sendMessage("init")
 /**
  * Send open event for devtools in the currently inspected window
  */
-const sendOpen = () => {
-    sendMessage("devtools:open")
-}
+const sendOpen = () => sendMessage("devtools:open")
 
-const sendError = (message) => {
-    sendMessage("devtools:error", message)
-}
+/**
+ * Send error from dev tools
+ * @param message {string}
+ */
+const sendError = (message) => sendMessage("devtools:error", message)
 
-// signal for hosted page
+// Reset initially
 sendOpen()
+resetState()

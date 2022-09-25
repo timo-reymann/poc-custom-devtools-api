@@ -1,5 +1,7 @@
 const devtoolsHost = document.querySelector("#custom-devtools-host")
 
+let registeredElements = [];
+
 /**
  * Append nodes bundled together in a row
  * @param nodes {Node}
@@ -31,6 +33,7 @@ const createInput = (elementDescriptor) => {
 
     // create button to submit
     const submitButton = document.createElement("button")
+    submitButton.classList.add("devtools--submit-button")
     submitButton.innerText = "Submit"
     submitButton.addEventListener("click", () => {
         sendMessage(`event:${elementDescriptor.id}:action`, {
@@ -76,8 +79,8 @@ const registerElement = (elementDescriptor) => {
 /**
  * Reset UI state and treat as opened again
  */
-const resetUI = () => {
-    sendOpen()
+const resetState = () => {
+    registeredElements = []
     devtoolsHost.innerHTML = ""
 }
 
@@ -88,7 +91,8 @@ const handleEvent = (e) => {
             break
 
         case "reloaded":
-            resetUI()
+            resetState()
+            sendOpen()
             break
 
         default:
