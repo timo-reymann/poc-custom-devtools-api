@@ -1,16 +1,18 @@
+const browserAPI = browser || chrome
+
 // Set theme to panel to style according to theme selected
-const theme = chrome.devtools.panels.themeName
+const theme = browserAPI.devtools.panels.themeName
 document.body.classList.add(`theme-${theme}`)
 
 // Create runtime connection for events
-const backgroundPageConnection = chrome.runtime.connect({
+const backgroundPageConnection = browserAPI.runtime.connect({
     name: 'panel'
 })
 
 // init messaging connection
 backgroundPageConnection.postMessage({
     name: 'init',
-    tabId: chrome.devtools.inspectedWindow.tabId
+    tabId: browserAPI.devtools.inspectedWindow.tabId
 })
 
 /**
@@ -19,7 +21,7 @@ backgroundPageConnection.postMessage({
 const sendOpen = () => {
     backgroundPageConnection.postMessage({
         name: 'devtools:open',
-        tabId: chrome.devtools.inspectedWindow.tabId
+        tabId: browserAPI.devtools.inspectedWindow.tabId
     })
 }
 
@@ -34,7 +36,7 @@ sendOpen()
 const sendMessage = (name, data) => {
     backgroundPageConnection.postMessage({
         name: name,
-        tabId: chrome.devtools.inspectedWindow.tabId,
+        tabId: browserAPI.devtools.inspectedWindow.tabId,
         data
     })
 }

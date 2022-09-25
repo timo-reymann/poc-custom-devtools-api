@@ -1,3 +1,4 @@
+const browserAPI = browser || chrome
 /*
  * agent ->content script -> background script -> dev tools
  */
@@ -16,7 +17,7 @@ window.addEventListener('message', function(event) {
     }
 
     console.debug("Forwarding message from agent to dev tools",event.data)
-    chrome.runtime.sendMessage(message)
+    browserAPI.runtime.sendMessage(message)
 })
 
 
