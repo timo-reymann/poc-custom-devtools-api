@@ -142,3 +142,41 @@ select {
     padding: 12px 8px;
     color: var(--text-secondary);
 }
+
+.devtools--tab-bar {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.devtools--tab {
+    background: transparent;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 12px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.devtools--tab:hover {
+    background: var(--bg-button-hover);
+}
+
+.devtools--tab-active {
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--accent);
+}
+
+.devtools--tab-panel {
+    display: none;
+}
+
+.devtools--tab-panel-active {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

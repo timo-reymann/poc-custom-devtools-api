@@ -127,10 +127,14 @@ const findListener = (event) => {
  * Register custom dev tools is your entrypoint for defining your dev tools.
  *
  * It is only evaluated if the dev tools are actually opened and otherwise just sits there ready to use.
- * @param devTools {{elementDescriptors : []}} Dev tools description
+ * @param devTools {{tabs: [{label:string, elements:[]}]}} Dev tools description with tab groupings
  */
 const registerCustomDevTools = (devTools) => {
-    const elementDescriptors = devTools.elementDescriptors
+    const tabs = devTools.tabs || []
+    const tabMeta = tabs.map((tab, i) => ({
+        id: `tab-${i}`,
+        label: tab.label
+    }))
 
     window.addEventListener("message", (e) => {
         if (e.source !== window || !e.data || e.data.source !== "custom-devtools-devtools") {
@@ -141,9 +145,14 @@ const registerCustomDevTools = (devTools) => {
         switch (event.name) {
             case "devtools:open":
                 sendEvent("devtools:agent:ready")
-                if (elementDescriptors) {
-                    elementDescriptors.forEach(descriptor => registerElement(descriptor))
-                }
+                sendEvent("registerTabs", { tabs: tabMeta })
+                tabs.forEach((tab, i) => {
+                    const tabId = tabMeta[i].id
+                    ;(tab.elements || []).forEach(descriptor => {
+                        const tagged = { ...descriptor, tabId }
+                        registerElement(tagged)
+                    })
+                })
                 break
 
             case "devtools:error":

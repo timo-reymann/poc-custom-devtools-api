@@ -1,14 +1,57 @@
 const devtoolsHost = document.querySelector("#custom-devtools-host")
 
+let tabsConfig = {}
+let tabOrder = []
+let activeTabId = null
+let tabBar = null
+let tabContentArea = null
+
 /**
- * Append nodes bundled together in a row
+ * Append nodes bundled together in a row into a given container
+ * @param container {Element}
  * @param nodes {Node}
  */
-const appendToDevToolsHost = (...nodes) => {
+const appendToContainer = (container, ...nodes) => {
     const wrapper = document.createElement("div")
     wrapper.classList.add("devtools--row")
     nodes.forEach(node => wrapper.append(node))
-    devtoolsHost.append(wrapper)
+    container.append(wrapper)
+}
+
+const activateTab = (tabId) => {
+    activeTabId = tabId
+    Object.entries(tabsConfig).forEach(([id, cfg]) => {
+        cfg.tabButton.classList.toggle("devtools--tab-active", id === tabId)
+        cfg.contentContainer.classList.toggle("devtools--tab-panel-active", id === tabId)
+    })
+}
+
+const registerTabs = (data) => {
+    resetState()
+    tabBar = document.createElement("div")
+    tabBar.classList.add("devtools--tab-bar")
+    tabContentArea = document.createElement("div")
+    tabContentArea.classList.add("devtools--tab-content")
+
+    data.tabs.forEach((tab, index) => {
+        const tabButton = document.createElement("button")
+        tabButton.classList.add("devtools--tab")
+        tabButton.textContent = tab.label
+        tabButton.addEventListener("click", () => activateTab(tab.id))
+
+        const content = document.createElement("div")
+        content.classList.add("devtools--tab-panel")
+        content.dataset.tabId = tab.id
+
+        tabsConfig[tab.id] = { label: tab.label, tabButton, contentContainer: content }
+        tabOrder.push(tab.id)
+        tabBar.append(tabButton)
+        tabContentArea.append(content)
+
+        if (index === 0) activateTab(tab.id)
+    })
+
+    devtoolsHost.append(tabBar, tabContentArea)
 }
 
 const createButton = (elementDescriptor) => {
@@ -127,30 +170,39 @@ const createDropdown = (elementDescriptor) => {
     return select
 }
 
+const getTabContainer = (tabId) => {
+    if (tabId && tabsConfig[tabId]) return tabsConfig[tabId].contentContainer
+    if (tabOrder.length > 0) return tabsConfig[tabOrder[0]].contentContainer
+    return null
+}
+
 /**
  * Register element with descriptor
- * @param elementDescriptor {{type:string,label:string,id:string,inputType:string?}}
+ * @param elementDescriptor {{type:string,label:string,id:string,inputType:string?,tabId:string?}}
  */
 const registerElement = (elementDescriptor) => {
+    const container = getTabContainer(elementDescriptor.tabId)
+    if (!container) return
+
     switch (elementDescriptor.type) {
         case "button":
-            appendToDevToolsHost(createButton(elementDescriptor))
+            appendToContainer(container, createButton(elementDescriptor))
             break
 
         case "input":
-            appendToDevToolsHost(...createInput(elementDescriptor))
+            appendToContainer(container, ...createInput(elementDescriptor))
             break
 
         case "dropdown":
-            appendToDevToolsHost(createDropdown(elementDescriptor))
+            appendToContainer(container, createDropdown(elementDescriptor))
             break
 
         case "heading":
-            appendToDevToolsHost(createHeading(elementDescriptor))
+            container.append(createHeading(elementDescriptor))
             break
 
         case "table":
-            devtoolsHost.append(createTable(elementDescriptor))
+            container.append(createTable(elementDescriptor))
             break
 
         default:
@@ -164,6 +216,11 @@ const registerElement = (elementDescriptor) => {
  */
 const resetState = () => {
     devtoolsHost.innerHTML = ""
+    tabsConfig = {}
+    tabOrder = []
+    activeTabId = null
+    tabBar = null
+    tabContentArea = null
 }
 
 let contentScriptReady = false
@@ -188,6 +245,10 @@ const handleEvent = (e) => {
             contentScriptReady = true
             resetState()
             sendOpen()
+            break
+
+        case "registerTabs":
+            registerTabs(e.data)
             break
 
         case "updateTable":

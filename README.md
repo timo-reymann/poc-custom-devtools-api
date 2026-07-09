@@ -60,7 +60,6 @@ builtin dev tools.
 
 ## Current limitations
 
-- No collapsible sections or grouping — all elements render flat in order
 - No keyboard shortcuts or focus management
 - No sorting or filtering for table data
 - Extension is served as unpacked — no automated build pipeline
@@ -70,7 +69,7 @@ builtin dev tools.
 
 - Stable API interface with TypeScript typings
 - Proper error handling and user-facing error states
-- More UI elements (toggles, sliders, color pickers, tabs, etc.)
+- More UI elements (toggles, sliders, color pickers, etc.)
 - Instructions on including devtools only in dev/staging builds
 - npm package for the <code>application/devtools-api.js</code> library
 - Automated tests (e2e and unit)
@@ -114,19 +113,25 @@ ln -sf firefox-manifest.json extension/manifest.json
 
 - Open `application/index.html` in your browser (preferably with local web server)
 - Open DevTools and go to tab _Custom Dev Tools_
-- You should see controls registered by the application (buttons, inputs, dropdown, headings)
+- You should see a tabbed panel with two tabs: **Table** (shows the demo table) and **Controls** (buttons, inputs, dropdown, headings)
+- Click between the tabs to switch views
 
 ## Smoke test checklist
 
 After loading the extension and opening the demo page + DevTools panel:
 
-- [ ] Heading "Communication" and "Manipulate page" are visible
-- [ ] "Hi from your todays host" button triggers an alert dialog
-- [ ] "Log it baby one more time" logs to the page's console
-- [ ] Dropdown "Select something" sends a selection event
-- [ ] "Set random background" changes the page background color
-- [ ] "Your name here" input submits the typed value
-- [ ] Color picker "Overwrite background color" works
-- [ ] Unsupported element `{type: "test"}` logs an error (expected)
-- [ ] Reloading the page (F5) resets and re-registers all controls
+- [ ] Tab bar shows two tabs: **Table** and **Controls**
+- [ ] Clicking each tab switches the visible content
+- [ ] The active tab has a highlighted bottom border
+- [ ] **Controls** tab: Heading "Communication" and "Manipulate page" are visible
+- [ ] **Controls** tab: "Hi from your todays host" button triggers an alert dialog
+- [ ] **Controls** tab: "Log it baby one more time" logs to the page's console
+- [ ] **Controls** tab: Dropdown "Select something" sends a selection event
+- [ ] **Controls** tab: "Set random background" changes the page background color
+- [ ] **Controls** tab: "Your name here" input submits the typed value
+- [ ] **Controls** tab: Color picker "Overwrite background color" works
+- [ ] **Table** tab: Table with columns Name/Age/City and 3 rows is visible
+- [ ] **Controls** tab: "Cycle table data" button — switch to **Table** tab to see data change
+- [ ] **Controls** tab: Unsupported element `{type: "test"}` logs an error (expected)
+- [ ] Reloading the page (F5) resets and re-registers all controls under both tabs
 - [ ] No "message port closed before a response was received" warnings in the background service-worker console (Chrome: inspect service worker from `chrome://extensions`)
