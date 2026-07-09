@@ -60,17 +60,20 @@ builtin dev tools.
 
 ## Current limitations
 
-- Only supports buttons and basic inputs for now
-- No complex structure for layout (yet)
+- No collapsible sections or grouping — all elements render flat in order
+- No keyboard shortcuts or focus management
+- No sorting or filtering for table data
+- Extension is served as unpacked — no automated build pipeline
+- Manifest must be swapped manually per browser (<code>ln -sf</code>)
 
 ## What is missing for real world usage
 
-- Add stable API interface with typing
-- Add error handling
-- Support more complex layouts and more UI elements
-- Provide instructions on how to use in applications
-  - only include devtools in dev builds etc.
-- Publishing npm package for API
+- Stable API interface with TypeScript typings
+- Proper error handling and user-facing error states
+- More UI elements (toggles, sliders, color pickers, tabs, etc.)
+- Instructions on including devtools only in dev/staging builds
+- npm package for the <code>application/devtools-api.js</code> library
+- Automated tests (e2e and unit)
 
 ## Try out
 
