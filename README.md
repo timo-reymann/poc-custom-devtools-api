@@ -44,6 +44,20 @@ builtin dev tools.
     - Communicate only via events with the application (technical limitation)
     - Renders devtools based on elements getting registered by application
 
+## Screenshots
+
+### Chrome
+
+| Dark | Light |
+|------|-------|
+| ![](./docs/chrome_dark.png) | ![](./docs/chrome_light.png) |
+
+### Firefox
+
+| Dark | Light |
+|------|-------|
+| ![](./docs/firefox_dark.png) | ![](./docs/firefox_light.png) |
+
 ## Current limitations
 
 - Only supports buttons and basic inputs for now
