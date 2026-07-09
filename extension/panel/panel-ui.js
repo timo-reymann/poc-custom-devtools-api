@@ -223,6 +223,8 @@ const resetState = () => {
     tabContentArea = null
 }
 
+let contentScriptReady = false
+
 const handleEvent = (e) => {
     switch (e.name) {
         case "registerElement":
@@ -234,11 +236,13 @@ const handleEvent = (e) => {
             break
 
         case "reloaded":
-            resetState()
-            devtoolsHost.innerHTML = "<h1>No Dev tools registered or still loading</h1>"
+            if (!contentScriptReady) {
+                resetState()
+            }
             break
 
         case "content-script:ready":
+            contentScriptReady = true
             resetState()
             sendOpen()
             break

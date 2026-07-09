@@ -134,5 +134,4 @@ After loading the extension and opening the demo page + DevTools panel:
 - [ ] **Controls** tab: "Cycle table data" button — switch to **Table** tab to see data change
 - [ ] **Controls** tab: Unsupported element `{type: "test"}` logs an error (expected)
 - [ ] Reloading the page (F5) resets and re-registers all controls under both tabs
-- [ ] Navigating the inspected window to a different page clears the devtools (shows placeholder until re-registered)
 - [ ] No "message port closed before a response was received" warnings in the background service-worker console (Chrome: inspect service worker from `chrome://extensions`)
