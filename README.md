@@ -74,6 +74,7 @@ builtin dev tools.
 - Instructions on including devtools only in dev/staging builds
 - npm package for the <code>application/devtools-api.js</code> library
 - Automated tests (e2e and unit)
+- User approval prompt before rendering — ideally per-session consent so the devtools panel only activates when the user explicitly allows it for the current session
 
 ## Try out
 
