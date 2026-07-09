@@ -26,6 +26,8 @@ window.addEventListener('message', function(event) {
  */
 browserAPI.runtime.onMessage.addListener(function(request) {
     console.debug("[Custom DevTools] Got message from dev tools", request)
-    request.source = 'custom-devtools-devtools'
-    window.postMessage(request, '*')
+    window.postMessage({ ...request, source: 'custom-devtools-devtools' }, '*')
 })
+
+// Signal that content script is fully initialized and ready to route messages
+browserAPI.runtime.sendMessage({ name: 'content-script:ready' })

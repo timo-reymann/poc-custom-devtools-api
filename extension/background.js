@@ -15,7 +15,6 @@ browserAPI.runtime.onMessage.addListener(function(request, sender) {
     } else {
         console.warn("[background-script] Failed to send message: sender.tab not defined.")
     }
-    return true
 })
 
 
@@ -33,7 +32,12 @@ browserAPI.runtime.onConnect.addListener(function(port) {
             connections[request.tabId] = port
 
             port.onDisconnect.addListener(function() {
-                delete connections[request.tabId]
+                for (const [connectedTabId, connectedPort] of Object.entries(connections)) {
+                    if (connectedPort === port) {
+                        delete connections[connectedTabId]
+                        break
+                    }
+                }
             })
 
             return

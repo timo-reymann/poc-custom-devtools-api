@@ -61,22 +61,54 @@ builtin dev tools.
 ## Try out
 
 ### Requirements
-- Chrome
+- Chrome **or** Firefox with Manifest V3 support (Firefox 109+, Chrome 88+)
+- The extension uses **Manifest V3** — choose the correct manifest for your browser
 
 ## Instructions
-- Link or copy manifest-{firefox|chrome}.json to manifest.json for the browser you want to use
-- Chrom(ium) - including Chrome, new Edge, Opera etc.
-  - Set up extension folder as unbundled Chrome extension
-    - Got to _Extensions_
-    - Toggle developer mode
-    - Click _Load unpacked_
-    - Select `./extension`
-- Firefox
-  - Setup extension folder as unbundled extension
-    - Go to _Settings_
-    - Choose the tab _Extensions_
-    - Click on the gear icon > _Debug addons_
-    - Click _Load temporary Add-on_ and select the `manifest.json`
+
+### 1. Select the correct manifest
+
+`extension/manifest.json` is a symlink that must point to the manifest matching your browser:
+
+```bash
+# For Chrome / Chromium-based browsers:
+ln -sf chrome-manifest.json extension/manifest.json
+
+# For Firefox:
+ln -sf firefox-manifest.json extension/manifest.json
+```
+
+> **⚠️ Loading the wrong manifest causes silent failure.** Chrome requires `background.service_worker` (chrome-manifest.json). Firefox uses `background.scripts` (firefox-manifest.json). If registration never shows up in the dev tools panel, check you're loading the right manifest.
+
+### 2. Load the extension
+
+- **Chrom(ium)** - including Chrome, new Edge, Opera etc.
+  - Go to _Extensions_ (`chrome://extensions`)
+  - Toggle developer mode
+  - Click _Load unpacked_
+  - Select `./extension`
+- **Firefox**
+  - Go to _Settings_ → _Extensions_
+  - Click the gear icon > _Debug addons_
+  - Click _Load temporary Add-on_ and select the `manifest.json`
+
+### 3. Open the demo
+
 - Open `application/index.html` in your browser (preferably with local web server)
-- Open dev tools and go to tab _Custom Dev tools_
-- Now you can interact with the page using the few actions that got registered by the application
+- Open DevTools and go to tab _Custom Dev Tools_
+- You should see controls registered by the application (buttons, inputs, dropdown, headings)
+
+## Smoke test checklist
+
+After loading the extension and opening the demo page + DevTools panel:
+
+- [ ] Heading "Communication" and "Manipulate page" are visible
+- [ ] "Hi from your todays host" button triggers an alert dialog
+- [ ] "Log it baby one more time" logs to the page's console
+- [ ] Dropdown "Select something" sends a selection event
+- [ ] "Set random background" changes the page background color
+- [ ] "Your name here" input submits the typed value
+- [ ] Color picker "Overwrite background color" works
+- [ ] Unsupported element `{type: "test"}` logs an error (expected)
+- [ ] Reloading the page (F5) resets and re-registers all controls
+- [ ] No "message port closed before a response was received" warnings in the background service-worker console (Chrome: inspect service worker from `chrome://extensions`)

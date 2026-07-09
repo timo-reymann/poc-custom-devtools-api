@@ -48,6 +48,38 @@
                     type: "color",
                     onAction: (e) => document.body.style.backgroundColor = e.value
                 }),
+                createHeading("Data Display"),
+                {
+                    id: "demo-table",
+                    type: "table",
+                    label: "User Data",
+                    columns: ["Name", "Age", "City"],
+                    rows: [
+                        ["Alice", "28", "New York"],
+                        ["Bob", "35", "London"],
+                        ["Charlie", "42", "Berlin"]
+                    ]
+                },
+                createButton(
+                    "Cycle table data",
+                    () => {
+                        const datasets = [
+                            [
+                                ["Alice", "28", "New York"],
+                                ["Bob", "35", "London"],
+                                ["Charlie", "42", "Berlin"]
+                            ],
+                            [
+                                ["Dave", "31", "Paris"],
+                                ["Eve", "29", "Tokyo"]
+                            ],
+                            []
+                        ]
+                        const idx = (window.tableCycleIdx || 0) % datasets.length
+                        window.tableCycleIdx = idx + 1
+                        updateTable("demo-table", datasets[idx])
+                    }
+                ),
                 // try to crash -> should log error
                 {
                     type: "test"

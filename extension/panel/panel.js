@@ -36,6 +36,5 @@ const sendOpen = () => sendMessage("devtools:open")
  */
 const sendError = (message) => sendMessage("devtools:error", message)
 
-// Reset initially
+// Trigger initial registration
 sendOpen()
-resetState()

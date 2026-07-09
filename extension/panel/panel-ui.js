@@ -50,6 +50,72 @@ const createHeading = (elementDescriptor) => {
     return heading;
 }
 
+const createTable = (elementDescriptor) => {
+    const wrapper = document.createElement("div")
+    wrapper.classList.add("devtools--table-wrapper")
+
+    const heading = document.createElement("h2")
+    heading.textContent = elementDescriptor.label
+    wrapper.append(heading)
+
+    const table = document.createElement("table")
+    table.id = elementDescriptor.id
+    wrapper.append(table)
+
+    const thead = document.createElement("thead")
+    const headerRow = document.createElement("tr")
+    elementDescriptor.columns.forEach(col => {
+        const th = document.createElement("th")
+        th.textContent = col
+        headerRow.append(th)
+    })
+    thead.append(headerRow)
+    table.append(thead)
+
+    const tbody = document.createElement("tbody")
+    table.append(tbody)
+    renderTableRows(tbody, elementDescriptor.rows)
+
+    return wrapper
+}
+
+const renderTableRows = (tbody, rows) => {
+    tbody.innerHTML = ""
+    if (!rows || rows.length === 0) {
+        const noData = document.createElement("td")
+        noData.textContent = "No data"
+        noData.colSpan = 999
+        noData.classList.add("devtools--table-no-data")
+        const row = document.createElement("tr")
+        row.append(noData)
+        tbody.append(row)
+        return
+    }
+    rows.forEach((cells, rowIndex) => {
+        const tr = document.createElement("tr")
+        if (rowIndex % 2 === 1) {
+            tr.classList.add("devtools--table-row-striped")
+        }
+        cells.forEach(cell => {
+            const td = document.createElement("td")
+            td.textContent = cell
+            tr.append(td)
+        })
+        tbody.append(tr)
+    })
+}
+
+const updateTable = (data) => {
+    const table = document.getElementById(data.id)
+    if (!table) {
+        sendError(`Table with id "${data.id}" not found`)
+        return
+    }
+    const tbody = table.querySelector("tbody")
+    if (!tbody) return
+    renderTableRows(tbody, data.rows)
+}
+
 const createDropdown = (elementDescriptor) => {
     const select = document.createElement("select")
     const options = elementDescriptor.options.map(o => `<option value="${o}">${o}</option>`)
@@ -83,6 +149,10 @@ const registerElement = (elementDescriptor) => {
             appendToDevToolsHost(createHeading(elementDescriptor))
             break
 
+        case "table":
+            devtoolsHost.append(createTable(elementDescriptor))
+            break
+
         default:
             sendError(`Unsupported element type ${elementDescriptor.type}`)
             break
@@ -96,6 +166,8 @@ const resetState = () => {
     devtoolsHost.innerHTML = ""
 }
 
+let contentScriptReady = false
+
 const handleEvent = (e) => {
     switch (e.name) {
         case "registerElement":
@@ -107,8 +179,19 @@ const handleEvent = (e) => {
             break
 
         case "reloaded":
+            if (!contentScriptReady) {
+                resetState()
+            }
+            break
+
+        case "content-script:ready":
+            contentScriptReady = true
             resetState()
             sendOpen()
+            break
+
+        case "updateTable":
+            updateTable(e.data)
             break
 
         default:
@@ -118,3 +201,6 @@ const handleEvent = (e) => {
 }
 
 backgroundPageConnection.onMessage.addListener(e => handleEvent(e))
+
+// Clear default placeholder text once panel is set up
+resetState()

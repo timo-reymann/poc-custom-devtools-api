@@ -79,6 +79,26 @@ const createInput = (inputDescriptor) => {
     }
 }
 
+const createTable = (tableDescriptor) => {
+    const { label, columns, rows } = tableDescriptor
+    return {
+        id: uuidv4(),
+        type: "table",
+        label,
+        columns,
+        rows
+    }
+}
+
+/**
+ * Update existing table rows in dev tools panel
+ * @param id {string} ID of the table element to update
+ * @param rows {Array<Array<string>>} New rows data
+ */
+const updateTable = (id, rows) => {
+    sendEvent("updateTable", { id, rows })
+}
+
 const createDropdown = (inputDescriptor) => {
     const {label, onAction, options} = inputDescriptor
     return {

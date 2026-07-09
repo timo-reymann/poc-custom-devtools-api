@@ -2,8 +2,11 @@
   "name": "Custom Dev-Tools",
   "description": "Extension for custom dev tools",
   "version": "1.0",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "devtools_page": "devtools.html",
+  "icons": {
+    "128": "panel/icons/settings-gears-gray.png"
+  },
   "permissions": [
     "scripting",
     "activeTab"

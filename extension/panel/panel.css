@@ -10,6 +10,8 @@ html, body {
 body {
     padding: 10px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 @media(min-width: 1000px) {
@@ -26,12 +28,6 @@ h1 {
 
 p {
     margin-bottom: 10px;
-}
-
-.theme-dark {
-    background: #202124;
-    color: white;
-    --color: white;
 }
 
 .devtool--host {
@@ -64,28 +60,25 @@ button {
     transition: all .1s;
     line-height: 1.5;
     height: 39px;
-    border: none;
-}
-
-.theme-dark button {
-    background: #343a40;
-    color: #fff;
-    border-color: #343a40;
+    border: 1px solid var(--border-color);
+    background: var(--bg-button);
+    color: var(--text-primary);
 }
 
 button:hover {
     cursor: pointer;
+    background: var(--bg-button-hover);
 }
 
-.theme-dark button:hover {
-    color: #fff;
-    background-color: #23272b;
-    border-color: #1d2124;
+button:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 1px;
 }
 
 input {
-    border: none;
-    background: none;
+    border: 1px solid var(--border-color);
+    background: var(--bg-input);
+    color: var(--text-primary);
     outline: none;
     border-radius: .25rem;
     line-height: 1.5;
@@ -94,16 +87,9 @@ input {
     padding-right: 8px;
 }
 
-.theme-dark input,
-.theme-dark select {
-    border: 1px solid #ced4da;
-    color: #fff;
-}
-
-.theme-light input,
-.theme-light select {
-    border: 1px solid #000;
-    color: #000;
+input:focus,
+select:focus {
+    outline: 1px solid var(--accent);
 }
 
 select {
@@ -111,9 +97,48 @@ select {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    border: none;
-    background: none;
+    border: 1px solid var(--border-color);
+    background: var(--bg-input);
+    color: var(--text-primary);
     padding-left: 8px;
     padding-right: 8px;
     border-radius: .25rem;
+}
+
+.devtools--table-wrapper {
+    width: 100%;
+}
+
+.devtools--table-wrapper h2 {
+    font-size: 20px;
+    margin: 10px 0 4px;
+}
+
+.devtools--table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.devtools--table-wrapper th {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 600;
+}
+
+.devtools--table-wrapper td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.devtools--table-row-striped {
+    background: var(--striped-bg);
+}
+
+.devtools--table-no-data {
+    text-align: center;
+    font-style: italic;
+    padding: 12px 8px;
+    color: var(--text-secondary);
 }
