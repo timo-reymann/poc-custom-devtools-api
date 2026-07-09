@@ -62,6 +62,7 @@ builtin dev tools.
 
 - No keyboard shortcuts or focus management
 - No sorting or filtering for table data
+- Stale devtools content persists when navigating the inspected window to a page without a matching content script (e.g. <code>chrome://</code>, <code>about:</code>, or pages that do not inject the content script)
 - Extension is served as unpacked — no automated build pipeline
 - Manifest must be swapped manually per browser (<code>ln -sf</code>)
 
