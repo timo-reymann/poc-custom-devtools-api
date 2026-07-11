@@ -73,3 +73,17 @@ export interface UpdateTablePayload {
   id: string;
   rows: string[][];
 }
+
+/**
+ * webext-bridge message IDs for the internal content-script <-> devtools relay.
+ * Both carry the RelayMessage envelope, so the dynamic event names it wraps
+ * (e.g. `event:<id>:action`) survive unchanged.
+ *
+ * NOTE: ideally these would be typed via webext-bridge's `ProtocolMap`
+ * augmentation, but webext-bridge v6's package.json declares no `types` export
+ * condition, so under WXT's `moduleResolution: "Bundler"` the augmentation target
+ * cannot be resolved. Callers therefore cast the RelayMessage payload at the
+ * boundary instead.
+ */
+export const TO_DEVTOOLS = 'to-devtools';
+export const TO_CONTENT_SCRIPT = 'to-content-script';

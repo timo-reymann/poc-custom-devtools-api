@@ -1,15 +1,27 @@
-import type { ElementDescriptor, RelayMessage, TabMeta, UpdateTablePayload } from '@/utils/protocol';
+import { onMessage, sendMessage as bridgeSend } from 'webext-bridge/devtools';
+import {
+  TO_CONTENT_SCRIPT,
+  TO_DEVTOOLS,
+  type ElementDescriptor,
+  type RelayMessage,
+  type TabMeta,
+  type UpdateTablePayload,
+} from '@/utils/protocol';
 import { store } from './store.svelte';
 
-// Runtime connection used to exchange events with the inspected page via the background relay.
-const port = browser.runtime.connect({ name: 'panel' });
+// See protocol.ts: webext-bridge ships no `types` export condition, so the payload
+// is cast to its expected type at the boundary.
+type BridgePayload = Parameters<typeof bridgeSend>[1];
 
-/** Send an event towards the application (panel -> background -> content script -> page). */
+/**
+ * Send an event towards the application. webext-bridge auto-scopes the bare
+ * `content-script` destination to the inspected tab (the devtools endpoint is
+ * registered as `devtools@<inspectedTabId>`), and the content script then relays
+ * it to the page over `window.postMessage`.
+ */
 export function sendMessage(name: string, data?: unknown): void {
-  port.postMessage({
-    name,
-    tabId: browser.devtools.inspectedWindow.tabId,
-    data,
+  bridgeSend(TO_CONTENT_SCRIPT, { name, data } as unknown as BridgePayload, 'content-script').catch(() => {
+    // No content script listening (e.g. inspecting chrome:// or about: pages).
   });
 }
 
@@ -63,11 +75,9 @@ function handleEvent(event: RelayMessage): void {
   }
 }
 
-/** Wire up the port listener and trigger the initial registration handshake. */
+/** Wire up the incoming listener and trigger the initial registration handshake. */
 export function initMessaging(): void {
-  port.onMessage.addListener((message) => handleEvent(message as RelayMessage));
-
-  // init messaging connection, then trigger initial registration.
-  sendMessage('init');
+  // No `init` handshake needed — webext-bridge manages the connection itself.
+  onMessage(TO_DEVTOOLS, ({ data }) => handleEvent(data as unknown as RelayMessage));
   sendOpen();
 }

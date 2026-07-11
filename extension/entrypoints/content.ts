@@ -1,15 +1,32 @@
-import { AGENT_SOURCE, DEVTOOLS_SOURCE, type RelayMessage, type WindowMessage } from '@/utils/protocol';
+import { onMessage, sendMessage } from 'webext-bridge/content-script';
+import {
+  AGENT_SOURCE,
+  DEVTOOLS_SOURCE,
+  TO_CONTENT_SCRIPT,
+  TO_DEVTOOLS,
+  type RelayMessage,
+  type WindowMessage,
+} from '@/utils/protocol';
+
+// See protocol.ts: webext-bridge ships no `types` export condition, so the payload
+// is cast to its expected type at the boundary.
+type BridgePayload = Parameters<typeof sendMessage>[1];
+const toDevtools = (message: RelayMessage) =>
+  sendMessage(TO_DEVTOOLS, message as unknown as BridgePayload, 'devtools').catch(() => {
+    // No devtools panel listening for this tab.
+  });
 
 /**
- * Bridges the page's `window.postMessage` API and the extension runtime.
- * Runs in the default ISOLATED world; `window.postMessage` still crosses to the page
- * because both share the same DOM window.
+ * Bridges the page's `window.postMessage` API (hop 1, unchanged) and the panel.
+ * The content-script <-> devtools hop (hop 2) now goes over webext-bridge instead of
+ * a hand-rolled background relay. Destinations use bare context names — webext-bridge
+ * auto-scopes them to this content script's own tab.
  */
 export default defineContentScript({
   matches: ['http://*/*', 'https://*/*'],
   main() {
     /*
-     * agent -> content script -> background script -> dev tools
+     * agent (page) -> content script -> devtools
      */
     window.addEventListener('message', (event) => {
       // Only accept messages from same frame
@@ -24,19 +41,18 @@ export default defineContentScript({
         return;
       }
 
-      console.debug('[Custom DevTools] Forwarding message from agent to dev tools', event.data);
-      browser.runtime.sendMessage(message);
+      toDevtools({ name: message.name, data: message.data });
     });
 
     /*
-     * agent <- content script <- background script <- dev tools
+     * agent (page) <- content script <- devtools
      */
-    browser.runtime.onMessage.addListener((request: RelayMessage) => {
-      console.debug('[Custom DevTools] Got message from dev tools', request);
-      window.postMessage({ ...request, source: DEVTOOLS_SOURCE }, '*');
+    onMessage(TO_CONTENT_SCRIPT, ({ data }) => {
+      const message = data as unknown as RelayMessage;
+      window.postMessage({ name: message.name, data: message.data, source: DEVTOOLS_SOURCE }, '*');
     });
 
-    // Signal that content script is fully initialized and ready to route messages
-    browser.runtime.sendMessage({ name: 'content-script:ready' });
+    // Signal readiness to the panel (delivered only if a panel is already open for this tab).
+    toDevtools({ name: 'content-script:ready' });
   },
 });
