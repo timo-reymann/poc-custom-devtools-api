@@ -1,0 +1,24 @@
+{
+  "name": "custom-devtools-extension",
+  "description": "Extension for custom dev tools",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "wxt prepare && svelte-check --tsconfig ./tsconfig.json",
+    "postinstall": "wxt prepare"
+  },
+  "devDependencies": {
+    "@wxt-dev/module-svelte": "^2.0.5",
+    "svelte": "^5.19.0",
+    "svelte-check": "^4.1.0",
+    "typescript": "^5.7.0",
+    "wxt": "^0.20.0"
+  }
+}

@@ -1,0 +1,75 @@
+/**
+ * Shared wire-protocol definitions for the custom-devtools message relay.
+ *
+ * The application side (`application/devtools-api.js`) is intentionally NOT part of this
+ * WXT project and stays vanilla JS, so these names/markers MUST stay byte-for-byte
+ * compatible with it.
+ */
+
+/** `window.postMessage` source markers exchanged between the page and the content script. */
+export const AGENT_SOURCE = 'custom-devtools-agent' as const;
+export const DEVTOOLS_SOURCE = 'custom-devtools-devtools' as const;
+
+/** A message as it travels over the runtime / port relay. */
+export interface RelayMessage {
+  name: string;
+  /** Present on messages the panel sends; identifies the inspected tab. */
+  tabId?: number;
+  data?: unknown;
+}
+
+/** A message as it travels over the page <-> content-script `window` bridge. */
+export interface WindowMessage extends RelayMessage {
+  source: typeof AGENT_SOURCE | typeof DEVTOOLS_SOURCE;
+}
+
+/** Tab metadata registered by the application via `registerTabs`. */
+export interface TabMeta {
+  id: string;
+  label: string;
+}
+
+/** Element descriptors the application registers into a panel tab. */
+export interface BaseDescriptor {
+  id: string;
+  label: string;
+  /** Assigned by the application when tagging an element to its tab. */
+  tabId?: string;
+}
+
+export interface ButtonDescriptor extends BaseDescriptor {
+  type: 'button';
+}
+
+export interface HeadingDescriptor extends BaseDescriptor {
+  type: 'heading';
+}
+
+export interface InputDescriptor extends BaseDescriptor {
+  type: 'input';
+  inputType?: string;
+}
+
+export interface DropdownDescriptor extends BaseDescriptor {
+  type: 'dropdown';
+  options: string[];
+}
+
+export interface TableDescriptor extends BaseDescriptor {
+  type: 'table';
+  columns: string[];
+  rows: string[][];
+}
+
+export type ElementDescriptor =
+  | ButtonDescriptor
+  | HeadingDescriptor
+  | InputDescriptor
+  | DropdownDescriptor
+  | TableDescriptor;
+
+/** Payload of the `updateTable` event. */
+export interface UpdateTablePayload {
+  id: string;
+  rows: string[][];
+}
