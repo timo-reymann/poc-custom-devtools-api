@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="dev:firefox" type="js.build_tools.npm" nameIsGenerated="true">
+    <package-json value="$PROJECT_DIR$/extension/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="dev:firefox" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
+    <method v="2" />
+  </configuration>
+  <configuration default="false" name="dev:firefox" type="CompoundRunConfigurationType">
+    <toRun name="dev:firefox" type="js.build_tools.npm" />
+    <toRun name="start-app" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>
