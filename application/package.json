@@ -1,0 +1,12 @@
+{
+  "name": "custom-devtools-demo",
+  "description": "Static demo page for the custom dev tools proof of concept",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "http-server . -p 8080 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
