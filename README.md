@@ -27,6 +27,12 @@ builtin dev tools.
 
 ![](./docs/implementation.png)
 
+The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, with a
+Svelte-based DevTools panel. WXT generates the Chrome (`service_worker`) and Firefox
+(`background.scripts`) Manifest V3 files from a single config, so there is no manual
+per-browser manifest swap. The `application/` demo and its `devtools-api.js` wrapper
+remain framework-free vanilla JavaScript.
+
 ### Application
 
 - Contains small JavaScript API wrapper around window messaging
@@ -63,12 +69,10 @@ builtin dev tools.
 - No keyboard shortcuts or focus management
 - No sorting or filtering for table data
 - Stale devtools content persists when navigating the inspected window to a page without a matching content script (e.g. <code>chrome://</code>, <code>about:</code>, or pages that do not inject the content script)
-- Extension is served as unpacked — no automated build pipeline
-- Manifest must be swapped manually per browser (<code>ln -sf</code>)
 
 ## What is missing for real world usage
 
-- Stable API interface with TypeScript typings
+- Stable, typed API surface for the application-facing `devtools-api.js` (the extension itself is now TypeScript, but the app wrapper is still untyped vanilla JS)
 - Proper error handling and user-facing error states
 - More UI elements (toggles, sliders, color pickers, etc.)
 - Instructions on including devtools only in dev/staging builds
@@ -79,40 +83,59 @@ builtin dev tools.
 ## Try out
 
 ### Requirements
+- Node.js 18+ and npm
 - Chrome **or** Firefox with Manifest V3 support (Firefox 109+, Chrome 88+)
-- The extension uses **Manifest V3** — choose the correct manifest for your browser
+
+WXT builds the correct Manifest V3 file for each browser automatically — no manual manifest selection.
+
+The repository is an **npm workspace** with two packages: `extension` (the WXT extension)
+and `application` (the demo page). A single install from the root covers both, and the root
+`package.json` exposes convenience scripts that delegate to the right workspace.
 
 ## Instructions
 
-### 1. Select the correct manifest
-
-`extension/manifest.json` is a symlink that must point to the manifest matching your browser:
+### 1. Install dependencies
 
 ```bash
-# For Chrome / Chromium-based browsers:
-ln -sf chrome-manifest.json extension/manifest.json
-
-# For Firefox:
-ln -sf firefox-manifest.json extension/manifest.json
+npm install            # from the repo root — installs both workspaces
 ```
 
-> **⚠️ Loading the wrong manifest causes silent failure.** Chrome requires `background.service_worker` (chrome-manifest.json). Firefox uses `background.scripts` (firefox-manifest.json). If registration never shows up in the dev tools panel, check you're loading the right manifest.
+### 2. Run the extension
 
-### 2. Load the extension
+**Development (recommended)** — launches a browser with the extension loaded and hot-reload enabled:
+
+```bash
+npm run dev            # Chrome
+npm run dev:firefox    # Firefox
+```
+
+**Or build and load manually:**
+
+```bash
+npm run build          # -> extension/.output/chrome-mv3
+npm run build:firefox  # -> extension/.output/firefox-mv3
+```
+
+> All commands above can be run from the repo root (they delegate to the `extension` workspace)
+> or from inside `extension/` directly.
 
 - **Chrom(ium)** - including Chrome, new Edge, Opera etc.
   - Go to _Extensions_ (`chrome://extensions`)
   - Toggle developer mode
-  - Click _Load unpacked_
-  - Select `./extension`
+  - Click _Load unpacked_ and select `extension/.output/chrome-mv3`
 - **Firefox**
-  - Go to _Settings_ → _Extensions_
-  - Click the gear icon > _Debug addons_
-  - Click _Load temporary Add-on_ and select the `manifest.json`
+  - Go to `about:debugging` → _This Firefox_
+  - Click _Load Temporary Add-on_ and select `extension/.output/firefox-mv3/manifest.json`
 
 ### 3. Open the demo
 
-- Open `application/index.html` in your browser (preferably with local web server)
+- Serve the demo with the bundled local web server (from the repo root):
+
+  ```bash
+  npm run demo     # serves http://localhost:8080
+  ```
+
+- Open http://localhost:8080 in your browser
 - Open DevTools and go to tab _Custom Dev Tools_
 - You should see a tabbed panel with two tabs: **Table** (shows the demo table) and **Controls** (buttons, inputs, dropdown, headings)
 - Click between the tabs to switch views
