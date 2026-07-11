@@ -1,2 +1,8 @@
 .idea
-manifest.json
+
+# Dependencies (hoisted to the workspace root by npm workspaces)
+node_modules
+
+# WXT extension build artifacts and generated types
+extension/.wxt
+extension/.output

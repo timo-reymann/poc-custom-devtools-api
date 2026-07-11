@@ -1,0 +1,20 @@
+{
+  "name": "poc-custom-devtools-api",
+  "description": "Proof of concept for registering custom dev tools from a running web application",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "extension",
+    "application"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w extension",
+    "dev:firefox": "npm run dev:firefox -w extension",
+    "build": "npm run build -w extension",
+    "build:firefox": "npm run build:firefox -w extension",
+    "zip": "npm run zip -w extension",
+    "zip:firefox": "npm run zip:firefox -w extension",
+    "compile": "npm run compile -w extension",
+    "demo": "npm run start -w application"
+  }
+}
