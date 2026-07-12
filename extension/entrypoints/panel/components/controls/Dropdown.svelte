@@ -16,3 +16,9 @@
     <option value={option}>{option}</option>
   {/each}
 </select>
+
+<style>
+  select {
+    width: 100%;
+  }
+</style>

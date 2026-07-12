@@ -6,3 +6,9 @@
 </script>
 
 <button onclick={() => sendMessage(`event:${el.id}:action`)}>{el.label}</button>
+
+<style>
+  button {
+    width: 100%;
+  }
+</style>
