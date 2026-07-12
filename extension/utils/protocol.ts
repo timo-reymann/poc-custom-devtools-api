@@ -35,6 +35,8 @@ export interface BaseDescriptor {
   label: string;
   /** Assigned by the application when tagging an element to its tab. */
   tabId?: string;
+  /** Number of columns this element spans in the 12-column grid (1–12, defaults to 12). */
+  cols?: number;
 }
 
 export interface ButtonDescriptor extends BaseDescriptor {
@@ -61,12 +63,27 @@ export interface TableDescriptor extends BaseDescriptor {
   rows: string[][];
 }
 
+export interface ToggleDescriptor extends BaseDescriptor {
+  type: 'toggle';
+  checked?: boolean;
+}
+
+export interface SliderDescriptor extends BaseDescriptor {
+  type: 'slider';
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+}
+
 export type ElementDescriptor =
   | ButtonDescriptor
   | HeadingDescriptor
   | InputDescriptor
   | DropdownDescriptor
-  | TableDescriptor;
+  | TableDescriptor
+  | ToggleDescriptor
+  | SliderDescriptor;
 
 /** Payload of the `updateTable` event. */
 export interface UpdateTablePayload {

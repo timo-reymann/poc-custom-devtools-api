@@ -8,8 +8,14 @@
   import InputControl from './components/controls/InputControl.svelte';
   import Dropdown from './components/controls/Dropdown.svelte';
   import Table from './components/controls/Table.svelte';
+  import Toggle from './components/controls/Toggle.svelte';
+  import Slider from './components/controls/Slider.svelte';
 
   onMount(() => initMessaging());
+
+  function span(cols: number | undefined): string {
+    return `grid-column: span ${cols ?? 12}; width: 100%; display: flex; align-items: stretch`;
+  }
 </script>
 
 <div class="devtool--host">
@@ -25,15 +31,19 @@
         >
           {#each store.elementsByTab[tab.id] ?? [] as element (element.id)}
             {#if element.type === 'button'}
-              <div class="devtools--row"><Button el={element} /></div>
+              <div style={span(element.cols)}><Button el={element} /></div>
             {:else if element.type === 'input'}
-              <div class="devtools--row"><InputControl el={element} /></div>
+              <div style={span(element.cols)}><InputControl el={element} /></div>
             {:else if element.type === 'dropdown'}
-              <div class="devtools--row"><Dropdown el={element} /></div>
+              <div style={span(element.cols)}><Dropdown el={element} /></div>
             {:else if element.type === 'heading'}
-              <Heading el={element} />
+              <div style={span(element.cols)}><Heading el={element} /></div>
             {:else if element.type === 'table'}
-              <Table el={element} />
+              <div style={span(element.cols)}><Table el={element} /></div>
+            {:else if element.type === 'toggle'}
+              <div style={span(element.cols)}><Toggle el={element} /></div>
+            {:else if element.type === 'slider'}
+              <div style={span(element.cols)}><Slider el={element} /></div>
             {/if}
           {/each}
         </div>

@@ -1,6 +1,6 @@
 import type { ElementDescriptor, TabMeta, UpdateTablePayload } from '@/utils/protocol';
 
-const KNOWN_TYPES = new Set(['button', 'heading', 'input', 'dropdown', 'table']);
+const KNOWN_TYPES = new Set(['button', 'heading', 'input', 'dropdown', 'table', 'toggle', 'slider']);
 
 export type RegisterResult = 'ok' | 'no-tab' | 'unknown-type';
 
