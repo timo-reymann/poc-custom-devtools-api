@@ -3,6 +3,8 @@ import type { HeadingDescriptor } from './elements/heading'
 import type { InputDescriptor } from './elements/input'
 import type { DropdownDescriptor } from './elements/dropdown'
 import type { TableDescriptor } from './elements/table'
+import type { ToggleDescriptor } from './elements/toggle'
+import type { SliderDescriptor } from './elements/slider'
 
 export type ElementDescriptor =
   | ButtonDescriptor
@@ -10,6 +12,8 @@ export type ElementDescriptor =
   | InputDescriptor
   | DropdownDescriptor
   | TableDescriptor
+  | ToggleDescriptor
+  | SliderDescriptor
 
 export interface DevToolsTab {
   label: string
