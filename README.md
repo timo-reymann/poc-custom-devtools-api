@@ -52,10 +52,8 @@ The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, w
 
 ## Planned / in progress
 
-- ~~Stable, typed API surface for the application-facing `devtools-api.js`~~ — done in `@devtoolster/web-api`
 - Proper error handling and user-facing error states
 - More UI controls (toggles, sliders, color pickers, …)
-- ~~npm package for `application/devtools-api.js`~~ — done as `@devtoolster/web-api`
 - Automated tests (e2e and unit)
 - User approval prompt — per-session consent before the panel activates
 

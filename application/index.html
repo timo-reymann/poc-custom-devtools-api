@@ -2,6 +2,11 @@
 <html>
 <head>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         body, html {
             width: 100%;
             margin: 0;
@@ -10,8 +15,27 @@
 
         body {
             background: black;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        main {
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            background: #756363;
+            padding: 20px;
         }
     </style>
     <script type="module" src="/main.js"></script>
 </head>
+<body>
+<header>
+    <h1>DevTools Dummy page</h1>
+</header>
+<main>
+    <p>Open DevTools and check <code>DevToolster</code></p>
+</main>
+</body>
 </html>
