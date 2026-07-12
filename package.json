@@ -5,7 +5,8 @@
   "version": "1.0.0",
   "workspaces": [
     "extension",
-    "application"
+    "application",
+    "web-api"
   ],
   "scripts": {
     "dev": "npm run dev -w extension",
@@ -15,6 +16,8 @@
     "zip": "npm run zip -w extension",
     "zip:firefox": "npm run zip:firefox -w extension",
     "compile": "npm run compile -w extension",
-    "demo": "npm run dev -w application"
+    "build:web-api": "npm run build -w @devtoolster/web-api",
+    "demo": "npm run build -w @devtoolster/web-api && npm run dev -w @devtoolster/demo",
+    "demo:watch": "npm run dev -w @devtoolster/web-api & npm run dev -w @devtoolster/demo"
   }
 }

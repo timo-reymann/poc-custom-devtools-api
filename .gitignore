@@ -6,3 +6,6 @@ node_modules
 # WXT extension build artifacts and generated types
 extension/.wxt
 extension/.output
+
+# web-api build output
+web-api/dist

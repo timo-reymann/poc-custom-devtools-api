@@ -5,7 +5,7 @@ import {
     createInput,
     createDropdown,
     updateTable,
-} from './devtools-api.js'
+} from '@devtoolster/web-api'
 
 registerCustomDevTools({
     tabs: [

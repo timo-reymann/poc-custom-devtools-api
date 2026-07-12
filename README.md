@@ -17,11 +17,11 @@ All of those approaches require effort that isn't always justified. Devtoolster 
 
 ![](./docs/implementation.png)
 
-The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, with a Svelte-based DevTools panel. WXT generates the Chrome (`service_worker`) and Firefox (`background.scripts`) Manifest V3 files from a single config — no manual per-browser manifest swap. The `application/` demo and its `devtools-api.js` wrapper are framework-free vanilla JavaScript.
+The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, with a Svelte-based DevTools panel. WXT generates the Chrome (`service_worker`) and Firefox (`background.scripts`) Manifest V3 files from a single config — no manual per-browser manifest swap. The page-facing API lives in `@devtoolster/web-api`, a TypeScript package built with Vite (library mode) and published through the same npm workspace.
 
 ### Application side
 
-- Small JavaScript API wrapper around `window.postMessage`
+- Typed TypeScript API (`@devtoolster/web-api`) wrapping `window.postMessage`
 - Talks to the content script via window messaging
 
 ### Extension
@@ -52,10 +52,10 @@ The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, w
 
 ## Planned / in progress
 
-- Stable, typed API surface for the application-facing `devtools-api.js` (the extension is TypeScript; the app wrapper is still untyped vanilla JS)
+- ~~Stable, typed API surface for the application-facing `devtools-api.js`~~ — done in `@devtoolster/web-api`
 - Proper error handling and user-facing error states
 - More UI controls (toggles, sliders, color pickers, …)
-- npm package for `application/devtools-api.js`
+- ~~npm package for `application/devtools-api.js`~~ — done as `@devtoolster/web-api`
 - Automated tests (e2e and unit)
 - User approval prompt — per-session consent before the panel activates
 
@@ -66,7 +66,7 @@ The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, w
 - Node.js 18+ and npm
 - Chrome **or** Firefox with Manifest V3 support (Firefox 109+, Chrome 88+)
 
-The repository is an **npm workspace** with two packages: `@devtoolster/extension` (the WXT extension) and `@devtoolster/demo` (the demo page). A single install from the root covers both.
+The repository is an **npm workspace** with three packages: `@devtoolster/extension` (the WXT extension), `@devtoolster/web-api` (the typed page-facing API), and `@devtoolster/demo` (the demo page). A single install from the root covers all three.
 
 ### 1. Install dependencies
 
