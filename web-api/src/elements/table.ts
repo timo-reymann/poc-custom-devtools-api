@@ -7,20 +7,23 @@ export interface TableDescriptor {
   label: string
   columns: string[]
   rows: string[][]
+  cols?: number
 }
 
 export const createTable = (tableDescriptor: {
   label: string
   columns: string[]
   rows: string[][]
+  cols?: number
 }): TableDescriptor => {
-  const { label, columns, rows } = tableDescriptor
+  const { label, columns, rows, cols } = tableDescriptor
   return {
     id: uuidv4(),
     type: 'table',
     label,
     columns,
     rows,
+    cols,
   }
 }
 
