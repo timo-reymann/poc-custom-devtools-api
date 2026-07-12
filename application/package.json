@@ -1,5 +1,5 @@
 {
-  "name": "custom-devtools-demo",
+  "name": "@devtoolster/demo",
   "description": "Static demo page for the custom dev tools proof of concept",
   "private": true,
   "version": "1.0.0",

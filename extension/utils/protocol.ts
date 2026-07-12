@@ -1,5 +1,5 @@
 /**
- * Shared wire-protocol definitions for the custom-devtools message relay.
+ * Shared wire-protocol definitions for the devtoolster message relay.
  *
  * The application side (`application/devtools-api.js`) is intentionally NOT part of this
  * WXT project and stays vanilla JS, so these names/markers MUST stay byte-for-byte
@@ -7,8 +7,8 @@
  */
 
 /** `window.postMessage` source markers exchanged between the page and the content script. */
-export const AGENT_SOURCE = 'custom-devtools-agent' as const;
-export const DEVTOOLS_SOURCE = 'custom-devtools-devtools' as const;
+export const AGENT_SOURCE = 'devtoolster-agent' as const;
+export const DEVTOOLS_SOURCE = 'devtoolster-devtools' as const;
 
 /** A message as it travels over the runtime / port relay. */
 export interface RelayMessage {

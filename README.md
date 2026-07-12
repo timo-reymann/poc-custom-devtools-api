@@ -1,54 +1,34 @@
-Proof of Concept - Generic dev tools
+Devtoolster
 ===
 
-> :warning: DISCLAIMER: This is a very minimal proof of concept, with **no error handling or tests** at all.
-> 
-> It is a pure evaluation for now. Feel free to reuse this work for other projects.
+> :construction: This project is under active development. Expect rough edges, missing features, and breaking changes.
 
-This repository contains a proof of concept for registering devtools directly from the running application in the
-browser.
+Devtoolster is a browser extension that lets web applications register custom panels directly inside the browser's built-in DevTools — no overlays, no query-parameter hacks, just a clean panel alongside the native tools.
 
 ## Background
 
-Especially in larger applications or enterprise web applications tests and development requires adjusting values or
-mocking states to show it to stakeholders.
-
-In some cases the framework tools provided are enough, but a bit cumbersome to use. Some developers start to write their
-own dev tools. Most of the time containing some kind of page overlay, setting query parameters to toggle specific
-behaviour. Sometimes even providing step-by-step documentation using the framework provided dev tools.
+In larger or enterprise web applications, development and QA often requires adjusting values or mocking state to demonstrate behaviour to stakeholders. Framework-provided tools are sometimes enough, but frequently cumbersome. Many teams end up writing their own dev tools — page overlays, query-parameter toggles, step-by-step guides bolted onto existing panels.
 
 ## Motivation
 
-As mentioned in background there are many way to handle this: but all require some effort that is not always
-reasonable. The goal is to provide a really slim API exposing a way to register custom features inside the browser
-builtin dev tools.
+All of those approaches require effort that isn't always justified. Devtoolster aims to provide a slim, consistent API that lets any web application register custom controls inside the browser's native DevTools with minimal setup.
 
 ## Implementation
 
 ![](./docs/implementation.png)
 
-The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, with a
-Svelte-based DevTools panel. WXT generates the Chrome (`service_worker`) and Firefox
-(`background.scripts`) Manifest V3 files from a single config, so there is no manual
-per-browser manifest swap. The `application/` demo and its `devtools-api.js` wrapper
-remain framework-free vanilla JavaScript.
+The extension is built with [WXT](https://wxt.dev) (Vite-based) in TypeScript, with a Svelte-based DevTools panel. WXT generates the Chrome (`service_worker`) and Firefox (`background.scripts`) Manifest V3 files from a single config — no manual per-browser manifest swap. The `application/` demo and its `devtools-api.js` wrapper are framework-free vanilla JavaScript.
 
-### Application
+### Application side
 
-- Contains small JavaScript API wrapper around window messaging
-- Talks with content script via window messaging
+- Small JavaScript API wrapper around `window.postMessage`
+- Talks to the content script via window messaging
 
 ### Extension
 
-- Content script
-    - Injected into application page setting up a connection between the page and the extension itself
-    - Running in same context as application
-- Background worker is required to make communication between content script and dev tools work
-    - Takes care of routing messages to chrome runtime or window depending on direction
-- Dev-Tools
-    - When opened send an event to content script telling they have been opened
-    - Communicate only via events with the application (technical limitation)
-    - Renders devtools based on elements getting registered by application
+- **Content script** — injected into the page, bridges `window` messaging to the extension runtime
+- **Background worker** — routes messages between the content script and the DevTools panel
+- **DevTools panel** — registers the _Devtoolster_ tab, listens for `devtools:open`, and renders controls registered by the application
 
 ## Screenshots
 
@@ -64,40 +44,34 @@ remain framework-free vanilla JavaScript.
 |------|-------|
 | ![](./docs/firefox_dark.png) | ![](./docs/firefox_light.png) |
 
-## Current limitations
+## Known limitations
 
 - No keyboard shortcuts or focus management
 - No sorting or filtering for table data
-- Stale devtools content persists when navigating the inspected window to a page without a matching content script (e.g. <code>chrome://</code>, <code>about:</code>, or pages that do not inject the content script)
+- Stale panel content persists when navigating to a page without a matching content script (e.g. `chrome://`, `about:`, or pages that don't inject the content script)
 
-## What is missing for real world usage
+## Planned / in progress
 
-- Stable, typed API surface for the application-facing `devtools-api.js` (the extension itself is now TypeScript, but the app wrapper is still untyped vanilla JS)
+- Stable, typed API surface for the application-facing `devtools-api.js` (the extension is TypeScript; the app wrapper is still untyped vanilla JS)
 - Proper error handling and user-facing error states
-- More UI elements (toggles, sliders, color pickers, etc.)
-- Instructions on including devtools only in dev/staging builds
-- npm package for the <code>application/devtools-api.js</code> library
+- More UI controls (toggles, sliders, color pickers, …)
+- npm package for `application/devtools-api.js`
 - Automated tests (e2e and unit)
-- User approval prompt before rendering — ideally per-session consent so the devtools panel only activates when the user explicitly allows it for the current session
+- User approval prompt — per-session consent before the panel activates
 
-## Try out
+## Getting started
 
 ### Requirements
+
 - Node.js 18+ and npm
 - Chrome **or** Firefox with Manifest V3 support (Firefox 109+, Chrome 88+)
 
-WXT builds the correct Manifest V3 file for each browser automatically — no manual manifest selection.
-
-The repository is an **npm workspace** with two packages: `extension` (the WXT extension)
-and `application` (the demo page). A single install from the root covers both, and the root
-`package.json` exposes convenience scripts that delegate to the right workspace.
-
-## Instructions
+The repository is an **npm workspace** with two packages: `@devtoolster/extension` (the WXT extension) and `@devtoolster/demo` (the demo page). A single install from the root covers both.
 
 ### 1. Install dependencies
 
 ```bash
-npm install            # from the repo root — installs both workspaces
+npm install
 ```
 
 ### 2. Run the extension
@@ -116,12 +90,9 @@ npm run build          # -> extension/.output/chrome-mv3
 npm run build:firefox  # -> extension/.output/firefox-mv3
 ```
 
-> All commands above can be run from the repo root (they delegate to the `extension` workspace)
-> or from inside `extension/` directly.
-
-- **Chrom(ium)** - including Chrome, new Edge, Opera etc.
-  - Go to _Extensions_ (`chrome://extensions`)
-  - Toggle developer mode
+- **Chrom(ium)** (Chrome, Edge, Opera, …)
+  - Go to `chrome://extensions`
+  - Enable developer mode
   - Click _Load unpacked_ and select `extension/.output/chrome-mv3`
 - **Firefox**
   - Go to `about:debugging` → _This Firefox_
@@ -129,16 +100,13 @@ npm run build:firefox  # -> extension/.output/firefox-mv3
 
 ### 3. Open the demo
 
-- Serve the demo with the bundled local web server (from the repo root):
-
-  ```bash
-  npm run demo     # serves http://localhost:8080
-  ```
+```bash
+npm run demo     # serves http://localhost:8080
+```
 
 - Open http://localhost:8080 in your browser
-- Open DevTools and go to tab _Custom Dev Tools_
-- You should see a tabbed panel with two tabs: **Table** (shows the demo table) and **Controls** (buttons, inputs, dropdown, headings)
-- Click between the tabs to switch views
+- Open DevTools and go to the _Devtoolster_ tab
+- You should see a tabbed panel with two tabs: **Table** and **Controls**
 
 ## Smoke test checklist
 
@@ -147,7 +115,7 @@ After loading the extension and opening the demo page + DevTools panel:
 - [ ] Tab bar shows two tabs: **Table** and **Controls**
 - [ ] Clicking each tab switches the visible content
 - [ ] The active tab has a highlighted bottom border
-- [ ] **Controls** tab: Heading "Communication" and "Manipulate page" are visible
+- [ ] **Controls** tab: Headings "Communication" and "Manipulate page" are visible
 - [ ] **Controls** tab: "Hi from your todays host" button triggers an alert dialog
 - [ ] **Controls** tab: "Log it baby one more time" logs to the page's console
 - [ ] **Controls** tab: Dropdown "Select something" sends a selection event

@@ -5,7 +5,7 @@
  */
 const sendEvent = (name, data) => {
     window.postMessage({
-        source: "custom-devtools-agent",
+        source: "devtoolster-agent",
         name: name,
         data: data || {}
     })
@@ -137,7 +137,7 @@ const registerCustomDevTools = (devTools) => {
     }))
 
     window.addEventListener("message", (e) => {
-        if (e.source !== window || !e.data || e.data.source !== "custom-devtools-devtools") {
+        if (e.source !== window || !e.data || e.data.source !== "devtoolster-devtools") {
             return
         }
 

@@ -8,8 +8,8 @@ export default defineConfig({
   manifestVersion: 3,
   modules: ['@wxt-dev/module-svelte'],
   manifest: ({ browser }) => ({
-    name: 'Custom Dev-Tools',
-    description: 'Extension for custom dev tools',
+    name: 'Devtoolster',
+    description: 'Devtoolster browser extension',
     version: '1.0',
     icons: {
       '128': 'icons/settings-gears-gray.png',
@@ -21,7 +21,7 @@ export default defineConfig({
       ? {
           browser_specific_settings: {
             gecko: {
-              id: 'custom-devtools@poc.example',
+              id: 'devtoolster@poc.example',
               strict_min_version: '109.0',
             },
           },

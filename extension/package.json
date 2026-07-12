@@ -1,5 +1,5 @@
 {
-  "name": "custom-devtools-extension",
+  "name": "@devtoolster/extension",
   "description": "Extension for custom dev tools",
   "private": true,
   "version": "1.0.0",

@@ -1,5 +1,5 @@
 {
-  "name": "poc-custom-devtools-api",
+  "name": "devtoolster",
   "description": "Proof of concept for registering custom dev tools from a running web application",
   "private": true,
   "version": "1.0.0",
