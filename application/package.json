@@ -4,9 +4,11 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start": "http-server . -p 8080 -c-1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "http-server": "^14.1.1"
+    "vite": "^6.0.0"
   }
 }

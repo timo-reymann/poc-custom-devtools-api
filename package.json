@@ -15,6 +15,6 @@
     "zip": "npm run zip -w extension",
     "zip:firefox": "npm run zip:firefox -w extension",
     "compile": "npm run compile -w extension",
-    "demo": "npm run start -w application"
+    "demo": "npm run dev -w application"
   }
 }

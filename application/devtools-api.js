@@ -3,7 +3,7 @@
  * @param name {string} Name of the event
  * @param data {Object|undefined} Payload of the event, can be omitted
  */
-const sendEvent = (name, data) => {
+export const sendEvent = (name, data) => {
     window.postMessage({
         source: "devtoolster-agent",
         name: name,
@@ -41,7 +41,7 @@ const uuidv4 = () => ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
  * @param onAction {Function} What should happen on click
  * @returns {{onAction, id: *, label, type: string}}
  */
-const createButton = (label, onAction) => {
+export const createButton = (label, onAction) => {
     return {
         id: uuidv4(),
         type: "button",
@@ -55,7 +55,7 @@ const createButton = (label, onAction) => {
  * @param label Text for the heading
  * @returns {{id: *, label, type: string}}
  */
-const createHeading = (label) => {
+export const createHeading = (label) => {
     return {
         id: uuidv4(),
         type: "heading",
@@ -68,7 +68,7 @@ const createHeading = (label) => {
  * @param inputDescriptor {{label:string,onAction:Function,type:string?}} Label for input field
  * @returns {{onAction, id: *, label, type: string}}
  */
-const createInput = (inputDescriptor) => {
+export const createInput = (inputDescriptor) => {
     const {label, onAction, type} = inputDescriptor
     return {
         id: uuidv4(),
@@ -79,7 +79,7 @@ const createInput = (inputDescriptor) => {
     }
 }
 
-const createTable = (tableDescriptor) => {
+export const createTable = (tableDescriptor) => {
     const { label, columns, rows } = tableDescriptor
     return {
         id: uuidv4(),
@@ -95,11 +95,11 @@ const createTable = (tableDescriptor) => {
  * @param id {string} ID of the table element to update
  * @param rows {Array<Array<string>>} New rows data
  */
-const updateTable = (id, rows) => {
+export const updateTable = (id, rows) => {
     sendEvent("updateTable", { id, rows })
 }
 
-const createDropdown = (inputDescriptor) => {
+export const createDropdown = (inputDescriptor) => {
     const {label, onAction, options} = inputDescriptor
     return {
         id: uuidv4(),
@@ -129,7 +129,7 @@ const findListener = (event) => {
  * It is only evaluated if the dev tools are actually opened and otherwise just sits there ready to use.
  * @param devTools {{tabs: [{label:string, elements:[]}]}} Dev tools description with tab groupings
  */
-const registerCustomDevTools = (devTools) => {
+export const registerCustomDevTools = (devTools) => {
     const tabs = devTools.tabs || []
     const tabMeta = tabs.map((tab, i) => ({
         id: `tab-${i}`,
