@@ -1,6 +1,10 @@
 Devtoolster
 ===
 
+<div align="center">
+  <img src=".github/images/logo.png" width="256" />
+</div>
+
 > :construction: This project is under active development. Expect rough edges, missing features, and breaking changes.
 
 Devtoolster is a browser extension that lets web applications register custom panels directly inside the browser's built-in DevTools — no overlays, no query-parameter hacks, just a clean panel alongside the native tools.
