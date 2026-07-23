@@ -23,6 +23,10 @@ export default defineConfig({
             gecko: {
               id: 'devtoolster@poc.example',
               strict_min_version: '109.0',
+              // Mandatory for new AMO submissions; "none" declares no data is collected.
+              data_collection_permissions: {
+                required: ['none'],
+              },
             },
           },
         }
